@@ -1,29 +1,58 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
-        SocialNetwork sn = new SocialNetwork("AITU Social");
-        sn.showNetworkName();
+        Instagram instagram = new Instagram(true);
 
-        Profile user1 = new Profile("Muhammad", 150);
-        Profile user2 = new Profile("Rasul", 200);
+        Profile rasul = new Profile("Rasul", 1500);
+        Profile dikosh = new Profile("Dikosh", 4200);
+        Profile ali = new Profile("Ali", 3000);
+        Profile dana = new Profile("Dana", 2100);
+        Profile sanzhar = new Profile("Sanzhar", 3800);
 
-        Post post1 = new Post("Hello AITU!");
+        rasul.setVerified(true);
+        dikosh.setVerified(true);
 
-        System.out.println(user1);
-        System.out.println(user2);
-        System.out.println(post1);
+        instagram.addProfile(rasul);
+        instagram.addProfile(dikosh);
+        instagram.addProfile(ali);
+        instagram.addProfile(dana);
+        instagram.addProfile(sanzhar);
 
-        post1.likePostByProfile(user1);
-        System.out.println("After like by Muhammad: " + post1);
-        post1.likePostByProfile(user2);
-        System.out.println("After like by Rasul: " + post1);
+        instagram.addPost(new Post("Morning post", rasul, false));
+        instagram.addPost(new Post("Workout reel", rasul, true));
 
-        System.out.println(post1.getLikeOwners());
+        instagram.addPost(new Post("Travel reel", dikosh, true));
+        instagram.addPost(new Post("Coffee post", dikosh, false));
 
-        if (user1.getFollowers() > user2.getFollowers()) {
-            System.out.println(user1.getUsername() + " is more popular!");
-        } else {
-            System.out.println(user2.getUsername() + " is more popular!");
-        }
+        instagram.addPost(new Post("Study post", ali, false));
+        instagram.addPost(new Post("Funny reel", ali, true));
+
+        instagram.addPost(new Post("Nature post", dana, false));
+        instagram.addPost(new Post("Dance reel", dana, true));
+
+        instagram.addPost(new Post("Coding post", sanzhar, false));
+        instagram.addPost(new Post("Motivation reel", sanzhar, true));
+
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            instagram.showProfilesList();
+            System.out.println("0. Exit");
+            System.out.print("Choose profile number: ");
+            choice = sc.nextInt();
+
+            if (choice != 0) {
+                Profile selected = instagram.getProfileByIndex(choice);
+                if (selected != null) {
+                    selected.showStatistics();
+                }
+            }
+        } while (choice != 0);
+
+        sc.close();
+        System.out.println("Program finished.");
     }
 }
