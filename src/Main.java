@@ -13,13 +13,6 @@ public class Main {
         System.out.println(user2);
         System.out.println(post1);
 
-        post1.likePostByProfile(user1);
-        System.out.println("After like by Muhammad: " + post1);
-        post1.likePostByProfile(user2);
-        System.out.println("After like by Rasul: " + post1);
-
-        System.out.println(post1.getLikeOwners());
-
         if (user1.getFollowers() > user2.getFollowers()) {
             System.out.println(user1.getUsername() + " is more popular!");
         } else {
