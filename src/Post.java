@@ -1,42 +1,27 @@
-import java.util.Objects;
 import java.util.Random;
 
 public class Post {
-
-    private String content;
+    private String text;
+    private Profile owner;
+    private boolean reel;
     private int likes;
     private int views;
-    private boolean reel;
-    private Profile owner;
 
-    public Post(String content, Profile owner, boolean reel) {
-        this.content = content;
+    public Post(String text, Profile owner, boolean reel) {
+        this.text = text;
         this.owner = owner;
         this.reel = reel;
-    }
-
-    public void generateStats() {
         Random r = new Random();
-        likes = r.nextInt(5000) + 1;
-        views = r.nextInt(20000) + 1;
-        owner.addPostStats(likes, views, reel);
+        this.likes = r.nextInt(500) + 1;
+        this.views = r.nextInt(3000) + 1;
+        owner.addStats(this.likes, this.views, reel);
     }
 
-    @Override
+    public Profile getOwner() {
+        return this.owner;
+    }
+
     public String toString() {
-        return content + (reel ? " [REEL]" : "") + " | Likes: " + likes + " | Views: " + views;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Post)) return false;
-        Post post = (Post) o;
-        return Objects.equals(content, post.content);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(content);
+        return this.text + (this.reel ? " [REEL]" : "") + " | likes: " + this.likes + " | views: " + this.views;
     }
 }

@@ -2,57 +2,83 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
-        Instagram instagram = new Instagram(true);
-
-        Profile rasul = new Profile("Rasul", 1500);
-        Profile dikosh = new Profile("Dikosh", 4200);
-        Profile ali = new Profile("Ali", 3000);
-        Profile dana = new Profile("Dana", 2100);
-        Profile sanzhar = new Profile("Sanzhar", 3800);
-
-        rasul.setVerified(true);
-        dikosh.setVerified(true);
-
-        instagram.addProfile(rasul);
-        instagram.addProfile(dikosh);
-        instagram.addProfile(ali);
-        instagram.addProfile(dana);
-        instagram.addProfile(sanzhar);
-
-        instagram.addPost(new Post("Morning post", rasul, false));
-        instagram.addPost(new Post("Workout reel", rasul, true));
-
-        instagram.addPost(new Post("Travel reel", dikosh, true));
-        instagram.addPost(new Post("Coffee post", dikosh, false));
-
-        instagram.addPost(new Post("Study post", ali, false));
-        instagram.addPost(new Post("Funny reel", ali, true));
-
-        instagram.addPost(new Post("Nature post", dana, false));
-        instagram.addPost(new Post("Dance reel", dana, true));
-
-        instagram.addPost(new Post("Coding post", sanzhar, false));
-        instagram.addPost(new Post("Motivation reel", sanzhar, true));
-
+        Instagram ig = new Instagram();
+        Profile admin = new Profile("admin", "admin");
+        ig.addProfile(admin);
+        Profile a = new Profile("rasul", "1234");
+        Profile b = new Profile("ali", "2222");
+        a.setVerified(true);
+        ig.addProfile(a);
+        ig.addProfile(b);
+        ig.addPost(new Post("Morning post", a, false));
+        ig.addPost(new Post("Workout reel", a, true));
+        ig.addPost(new Post("Funny reel", b, true));
         Scanner sc = new Scanner(System.in);
-        int choice;
 
-        do {
-            instagram.showProfilesList();
-            System.out.println("0. Exit");
-            System.out.print("Choose profile number: ");
-            choice = sc.nextInt();
+        while(true) {
+            System.out.println("1 Login");
+            System.out.println("2 Register");
+            System.out.println("0 Exit");
+            int c = sc.nextInt();
+            if (c == 0) {
+                sc.close();
+                return;
+            }
 
-            if (choice != 0) {
-                Profile selected = instagram.getProfileByIndex(choice);
-                if (selected != null) {
-                    selected.showStatistics();
+            if (c == 1) {
+                System.out.print("Login: ");
+                String l = sc.next();
+                System.out.print("Password: ");
+                String p = sc.next();
+                Profile u = ig.find(l);
+                if (u == null || !u.checkPassword(p)) {
+                    System.out.println("Wrong");
+                    continue;
+                }
+
+                if (l.equals("admin")) {
+                    for(Profile pr : ig.profiles) {
+                        System.out.println(pr);
+                    }
+
+                    System.out.print("Delete login: ");
+                    ig.delete(sc.next());
+                    continue;
+                }
+
+                while(true) {
+                    System.out.println("1 My profile");
+                    System.out.println("2 My posts");
+                    System.out.println("3 Logout");
+                    int x = sc.nextInt();
+                    if (x == 3) {
+                        break;
+                    }
+
+                    if (x == 1) {
+                        u.show();
+                    }
+
+                    if (x == 2) {
+                        for(Post pt : ig.myPosts(u)) {
+                            System.out.println(pt);
+                        }
+                    }
                 }
             }
-        } while (choice != 0);
 
-        sc.close();
-        System.out.println("Program finished.");
+            if (c == 2) {
+                System.out.print("Login: ");
+                String l = sc.next();
+                System.out.print("Password: ");
+                String p = sc.next();
+                if (ig.find(l) != null) {
+                    System.out.println("Login exists");
+                } else {
+                    ig.addProfile(new Profile(l, p));
+                    System.out.println("Registered");
+                }
+            }
+        }
     }
 }

@@ -1,106 +1,89 @@
 import java.util.Objects;
 
 public class Profile {
-
     private String username;
+    private String login;
+    private String password;
     private int followers;
     private boolean verified;
+    private int posts;
+    private int reels;
+    private int likes;
+    private int views;
 
-    private int totalLikes;
-    private int totalViews;
-    private int totalPosts;
-    private int totalReels;
+    public Profile(String login, String password) {
+        this.login = login;
+        this.password = password;
+        this.followers = 0;
+    }
 
     public Profile(String username, int followers) {
         this.username = username;
-        this.followers = Math.max(followers, 0);
+        this.followers = followers;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
+    }
+
+    public String getLogin() {
+        return this.login;
+    }
+
+    public boolean checkPassword(String p) {
+        return this.password.equals(p);
     }
 
     public int getFollowers() {
-        return followers;
+        return this.followers;
     }
 
     public boolean isVerified() {
-        return verified;
+        return this.verified;
     }
 
-    public void setVerified(boolean verified) {
-        this.verified = verified;
+    public void setVerified(boolean v) {
+        this.verified = v;
     }
 
-    public void addPostStats(int likes, int views, boolean reel) {
-        totalPosts++;
-        totalLikes += likes;
-        totalViews += views;
-        if (reel) totalReels++;
-    }
-
-    private String getLevel() {
-        if (followers >= 5000) return "Influencer";
-        if (followers >= 2000) return "Rising Creator";
-        return "New User";
-    }
-
-    private double getEngagementRate() {
-        if (totalViews == 0) return 0;
-        return (double) totalLikes / totalViews * 100;
-    }
-
-    private double getAvgLikes() {
-        if (totalPosts == 0) return 0;
-        return (double) totalLikes / totalPosts;
-    }
-
-    private String getMainContentType() {
-        return totalReels > (totalPosts - totalReels) ? "Reels" : "Posts";
-    }
-
-    private int getPopularityScore() {
-        return followers + totalLikes / 10 + totalViews / 100;
-    }
-
-    public void showStatistics() {
-        System.out.println("\nProfile: " + username);
-        System.out.println("Followers: " + followers);
-        System.out.println("Verified: " + (verified ? "Yes ✔" : "No"));
-        System.out.println("Posts: " + (totalPosts + 154));
-        System.out.println("Reels: " + (totalReels + 79));
-        System.out.println("Likes: " + totalLikes);
-        System.out.println("Views: " + totalViews);
-        System.out.println("Level: " + getLevel());
-        System.out.printf("Engagement rate: %.2f%%\n", getEngagementRate());
-        System.out.printf("Avg likes per post: %.1f\n", getAvgLikes());
-        System.out.println("Main content type: " + getMainContentType());
-        System.out.println("Popularity score: " + getPopularityScore());
-        if (getEngagementRate() > 10) {
-            System.out.println("Status: Top creator 🚀");
+    public void addStats(int l, int v, boolean r) {
+        ++this.posts;
+        this.likes += l;
+        this.views += v;
+        if (r) {
+            ++this.reels;
         }
-        System.out.print("Likes bar: ");
-        for (int i = 0; i < totalLikes / 2000; i++) {
-            System.out.print("█");
-        }
-        System.out.println();
+
     }
 
-    @Override
+    public void show() {
+        String var10001 = this.username;
+        System.out.println("User: " + var10001);
+        int var1 = this.followers;
+        System.out.println("Followers: " + var1);
+        System.out.println("Verified: " + (this.verified ? "Yes" : "No"));
+        System.out.println("Posts: " + this.posts);
+        System.out.println("Reels: " + this.reels);
+        System.out.println("Likes: " + this.likes);
+        System.out.println("Views: " + this.views);
+    }
+
     public String toString() {
-        return username + (verified ? " ✔" : "") + " | Followers: " + followers;
+        return this.username + " | followers: " + this.followers;
     }
 
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Profile)) return false;
-        Profile profile = (Profile) o;
-        return Objects.equals(username, profile.username);
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof Profile)) {
+            return false;
+        } else {
+            Profile p = (Profile)o;
+            return Objects.equals(this.login, p.login);
+        }
     }
 
-    @Override
     public int hashCode() {
-        return Objects.hash(username);
+        return Objects.hash(new Object[]{this.login});
     }
 }

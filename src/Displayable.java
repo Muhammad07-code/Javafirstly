@@ -1,3 +1,3 @@
 public interface Displayable {
-    void displayInfo();
+    void displayInfo( );
 }
