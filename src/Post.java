@@ -1,20 +1,19 @@
 public class Post {
 
-    private String content;
+    private String text;
+    private User owner;
 
-    public Post(String content) {
-        this.content = content;
+    public Post(String text, User owner) {
+        this.text = text;
+        this.owner = owner;
     }
 
-    public String getContent() {
-        return content;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
+    @Override
     public String toString() {
-        return "Post: " + content;
+        return text;
     }
 }
